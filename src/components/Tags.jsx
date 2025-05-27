@@ -57,8 +57,8 @@ const Tags = ({ csvData, order_id }) => {
                 padding: 0;
               }
               .tag-label {
-                width: 100mm;
-                height: 50mm;
+                width: 378px;
+                height: 189px;
                 box-sizing: border-box;
                 page-break-after: always;
               }
@@ -98,8 +98,7 @@ const Tags = ({ csvData, order_id }) => {
         </button>
       </div>
 
-      {/* <div ref={printRef}> */}
-             <div ref={printRef} className="w-full grid grid-cols-1 gap-2 container  max-w-100 mt-4 mx-auto">
+             {/* <div ref={printRef} className="w-full grid grid-cols-1 gap-2 container  max-w-100 mt-4 mx-auto">
         {csvData?.map((tag, i) => (
           <div className="tag-label relative border border-gray-200 p-4" key={i}>
             <p>
@@ -123,7 +122,47 @@ const Tags = ({ csvData, order_id }) => {
             </div>
           </div>
         ))}
+      </div> */}
+      <div
+  ref={printRef}
+  className="w-full grid grid-cols-1 gap-2 container max-w-screen-md mt-4 mx-auto"
+>
+  {csvData?.map((tag, i) => (
+    <div
+      key={i}
+      className="tag-label relative border border-gray-300 py-6 px-4"
+      style={{
+        width: '378px',
+        height: '189px',
+        boxSizing: 'border-box',
+        pageBreakAfter: 'always',
+      }}
+    >
+      <p className="text-sm font-medium">
+        Brand: Qurvii | Sku: {`${tag.style_number}-${tag.color}-${tag.size}`}
+      </p>
+      <p className="text-sm">Color: {tag.color} | Size: {tag.size}</p>
+      <p className="text-sm">
+        MRP: ₹{tag.mrp || "5333"} (Incl. of all taxes)
+      </p>
+      <p className="text-sm">Net Qty: 1 | Unit: 1 Pcs</p>
+      <p className="text-sm leading-tight">
+        MFG & MKT BY: Qurvii, 2nd Floor, B-149 Sector-6,
+        <br />
+        Noida, UP, 201301
+      </p>
+      <div className="qrcode absolute top-5 right-4">
+        <QRCodeSVG
+          value={order_id[i]?.order_id?.toString() || "542365"}
+          size={80}
+          level="H"
+          includeMargin={false}
+        />
       </div>
+    </div>
+  ))}
+</div>
+
     </div>
   );
 };
