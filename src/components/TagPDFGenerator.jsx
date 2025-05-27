@@ -84,7 +84,7 @@ const TagPDFGenerator = ({ csvData, order_id }) => {
             <p>
               MFG & MKT BY: Qurvii, 2nd Floor, B-149 Sector-6,
               <br />
-              Noida, UP, 201301
+              Noida, UP, 201301 
             </p>
             <p>
              <strong>Contact</strong> : support@qurvii.com  
@@ -101,6 +101,10 @@ const TagPDFGenerator = ({ csvData, order_id }) => {
                 size={80}
                 level="H"
               />
+             
+            </div>
+            <div className="absolute right-4 bottom-7">
+                 Order Id : {order_id?.[i]?.order_id?.toString() || "542365"}
             </div>
           </div>
         ))}
