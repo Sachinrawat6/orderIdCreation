@@ -106,7 +106,7 @@ const UploadAndSyncWithOrderId = () => {
                 // onChange={(e)=>console.log(e.target.value)}
                 className="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2.5 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer"
               >
-                <option value="">Select Channel</option>
+                <option value="">Select Category</option>
                 <option value="Return">Return</option>
                 <option value="New">New</option>
               </select>
@@ -127,7 +127,7 @@ const UploadAndSyncWithOrderId = () => {
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className={`space-y-6 ${channel.length>0?"block":"hidden"} `}>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition hover:border-blue-400">
             <div className="flex flex-col items-center justify-center space-y-3">
               <svg
