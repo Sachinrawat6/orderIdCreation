@@ -55,10 +55,11 @@ const Tags = ({ csvData, order_id }) => {
               body {
                 margin: 0;
                 padding: 0;
+                font:bold;
               }
               .tag-label {
                 width: 378px;
-                height: 189px;
+                height: 170px;
                 box-sizing: border-box;
                 page-break-after: always;
               }
@@ -130,15 +131,15 @@ const Tags = ({ csvData, order_id }) => {
   {csvData?.map((tag, i) => (
     <div
       key={i}
-      className="tag-label relative border border-gray-300 py-6 px-4"
+      className="tag-label relative border border-gray-300 py-6 px-4 font-bold"
       style={{
         width: '378px',
-        height: '189px',
+        height: '170px',
         boxSizing: 'border-box',
         pageBreakAfter: 'always',
       }}
     >
-      <p className="text-sm font-medium">
+      <p className="text-sm font-bold">
         Brand: Qurvii | Sku: {`${tag.style_number}-${tag.color}-${tag.size}`}
       </p>
       <p className="text-sm">Color: {tag.color} | Size: {tag.size}</p>

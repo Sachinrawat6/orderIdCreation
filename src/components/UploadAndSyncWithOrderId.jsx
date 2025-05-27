@@ -4,6 +4,7 @@ import axios from "axios";
 
 import Tags from "./Tags";
 import { Link } from "react-router-dom";
+import TagPDFGenerator from "./TagPDFGenerator";
 
 const UploadAndSyncWithOrderId = () => {
   const [csvData, setCsvData] = useState([]);
@@ -95,7 +96,7 @@ const UploadAndSyncWithOrderId = () => {
       <div className="max-w-3xl mx-auto p-8 bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-gray-800">
-            Order Synchronization
+            Order Synchronization & Tag Generation
           </h2>
 
           <div className="my-4">
@@ -257,8 +258,16 @@ const UploadAndSyncWithOrderId = () => {
 
                 {console.log(csvData)}
               </div>
+              
             </div>
+            
           )}
+            <div>
+                {/* <Tags csvData={csvData} order_id={response?.all_orders} /> */}
+                <TagPDFGenerator csvData={csvData} order_id={response?.all_orders} />
+
+                
+              </div>
 
           {response && (
             <div className="mt-4 bg-gray-50 p-4 rounded-md border border-gray-200">
@@ -283,14 +292,12 @@ const UploadAndSyncWithOrderId = () => {
                   </svg>
                 </button>
               </div>
+              
               <pre className="text-sm text-gray-800 bg-white p-3 rounded overflow-auto max-h-96 border border-gray-200">
                 {JSON.stringify(response, null, 2)}
                 {console.log(response.all_orders[0].order_id)}
               </pre>
-              <div>
-                <Tags csvData={csvData} order_id={response?.all_orders} />
-                
-              </div>
+            
             </div>
           )}
         </div>
