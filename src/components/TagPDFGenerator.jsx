@@ -50,7 +50,7 @@ const TagPDFGenerator = ({ csvData, order_id }) => {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }} className="relative">
+    <div  style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }} className="relative">
          <button
         onClick={exportTagsToPDF}
         style={{
@@ -62,7 +62,7 @@ const TagPDFGenerator = ({ csvData, order_id }) => {
           cursor: "pointer",
           fontSize: "16px",
         }}
-        className="absolute top-0 right-0 bg-yellow-200"
+        className={`${order_id?"block":"hidden"} absolute top-0 right-0 bg-yellow-200`}
       >
         Download Tags
       </button>
