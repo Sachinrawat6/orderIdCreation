@@ -1,12 +1,28 @@
-# React + Vite
+# UploadAndSyncWithOrderId Component
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📦 Overview
 
-Currently, two official plugins are available:
+The `UploadAndSyncWithOrderId` React component is designed for a workflow that allows users to:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Select a category/channel** (e.g., "Return" or "New").
+2. **Upload a CSV file** containing order or inventory data.
+3. **Parse and validate the CSV data** using PapaParse.
+4. **Send the parsed orders to a backend API** (`https://fastapi.qurvii.com/sync-orders`) to synchronize them.
+5. **Generate tag PDFs** using the returned order data via the `TagPDFGenerator` component.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Features
+
+- Category-based order segregation (`Return` or `New`).
+- CSV parsing with data validation and transformation.
+- Integration with an API endpoint for syncing order data.
+- Real-time UI feedback (loading indicators, success/failure messages).
+- Tag generation with PDF export support.
+
+---
+
+## 🧩 Dependencies
+
+```bash
+npm install react papaparse axios react-router-dom
