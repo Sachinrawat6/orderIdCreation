@@ -262,44 +262,11 @@ const UploadAndSyncWithOrderId = () => {
             </div>
             
           )}
-            <div>
-                {/* <Tags csvData={csvData} order_id={response?.all_orders} /> */}
+            <div className={`${response?.all_orders[0].order_id?"block":"hidden"} h-55  overflow-auto`}>
                 <TagPDFGenerator csvData={csvData} order_id={response?.all_orders} />
 
                 
               </div>
-
-          {response && (
-            <div className="mt-4 bg-gray-50 p-4 rounded-md border border-gray-200">
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="font-medium text-gray-700">API Response</h3>
-                <button
-                  onClick={() => setResponse(null)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-              
-              <pre className="text-sm text-gray-800 bg-white p-3 rounded overflow-auto max-h-96 border border-gray-200">
-                {JSON.stringify(response, null, 2)}
-                {console.log(response.all_orders[0].order_id)}
-              </pre>
-            
-            </div>
-          )}
         </div>
       </div>
     </>
