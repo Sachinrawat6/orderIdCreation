@@ -32,7 +32,6 @@ const UploadAndSyncWithOrderId = () => {
 
           return {
             channel: channel || "",
-            // style_number: isNaN(styleNumber) ? 0 : Number(styleNumber.split("-")[0]),
             style_number: Number(styleNumber.split("-")[0]),
             size: row["Size"]?.trim() || "",
             mrp,
