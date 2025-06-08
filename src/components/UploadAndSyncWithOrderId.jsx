@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
 import axios from "axios";
 
@@ -8,11 +8,26 @@ import TagPDFGenerator from "./TagPDFGenerator";
 
 const UploadAndSyncWithOrderId = () => {
   const [csvData, setCsvData] = useState([]);
+  const [product, setProductsData] = useState([]);
   const [message, setMessage] = useState("");
   const [response, setResponse] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [fileName, setFileName] = useState("");
   const [channel, setChannel] = useState("");
+
+  // Fetch MRP data from product API
+  const fetchProducts = async () => {
+    const response = await fetch(
+      "https://inventorybackend-m1z8.onrender.com/api/product"
+    );
+    const result = await response.json();
+    setProductsData(result);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -24,28 +39,73 @@ const UploadAndSyncWithOrderId = () => {
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
-      complete: function (results) {
-        const parsedData = results.data.map((row) => {
-          const styleNumber = row["Sku Code"]?.toString().trim() || "";
-          const mrp = row['MRP'] || 0;
-          const quantity = row['Qty'] || 1;
+      // complete: function (results) {
+      //   const parsedData = results.data.map((row) => {
+      //     // const styleNumber = row["Sku Code"]?.toString().trim() || "" || row["Sku Id"].split("-")[0];
+      //     const styleNumber = row["Sku Code"]?.toString().trim() || row["Sku Id"]?.toString().split("-")[0] || "";
+      //     // const mrp = row['MRP'] || 0;
+      //     const mrp = row['MRP'] || "" || product.find((p)=>p.sku_code===Number(styleNumber))?.MRP;
+      //     const quantity = row['Qty'] ||  row["Good"] || 1;
 
-          return {
-            channel: channel || "",
-            style_number: Number(styleNumber.split("-")[0]),
-            size: row["Size"]?.trim() || "",
-            mrp,
-            quantity,
-            color: row["Color"]?.trim() || "",
-            found_in_inventory:
-              typeof row["Found In Inventory"] === "string" &&
-              row["Found In Inventory"].toLowerCase().trim() === "yes",
-          };
+      //     return {
+      //       channel: channel || "",
+      //       style_number: Number(styleNumber.split("-")[0]),
+      //       size: row["Size"]?.trim()  || row["Sku Id"]?.toString().split("-")[2] || "",
+      //       mrp,
+      //       quantity,
+      //       color: row["Color"]?.trim() || row["Sku Id"]?.toString().split("-")[1] || "",
+      //       found_in_inventory:
+      //         typeof row["Found In Inventory"] === "string" &&
+      //         row["Found In Inventory"].toLowerCase().trim() === "yes",
+      //     };
+      //   });
+
+      //   setCsvData(parsedData);
+      //   setMessage(`📄 ${parsedData.length} records loaded from CSV`);
+      // },
+      complete: function (results) {
+        const allData = [];
+
+        results.data.forEach((row) => {
+          const styleNumber =
+            row["Sku Code"]?.toString().trim() ||
+            row["Sku Id"]?.toString().split("-")[0] ||
+            "";
+          const mrp =
+            row["MRP"] ||
+            product.find((p) => p.sku_code === Number(styleNumber))?.MRP ||
+            "";
+          const quantity = parseInt(row["Qty"] || row["Good"] || 1, 10);
+
+          const size =
+            row["Size"]?.trim() ||
+            row["Sku Id"]?.toString().split("-")[2] ||
+            "";
+          const color =
+            row["Color"]?.trim() ||
+            row["Sku Id"]?.toString().split("-")[1] ||
+            "";
+          const found =
+            typeof row["Found In Inventory"] === "string" &&
+            row["Found In Inventory"].toLowerCase().trim() === "yes";
+
+          for (let i = 0; i < quantity; i++) {
+            allData.push({
+              channel: channel || "",
+              style_number: Number(styleNumber.split("-")[0]),
+              size,
+              mrp,
+              quantity: 1, // each record = 1 item
+              color,
+              found_in_inventory: found,
+            });
+          }
         });
 
-        setCsvData(parsedData);
-        setMessage(`📄 ${parsedData.length} records loaded from CSV`);
+        setCsvData(allData);
+        setMessage(`📄 ${allData.length} records loaded from CSV`);
       },
+
       error: function (error) {
         setMessage(`❌ Error parsing CSV: ${error.message}`);
       },
@@ -126,7 +186,9 @@ const UploadAndSyncWithOrderId = () => {
           </div>
         </div>
 
-        <div className={`space-y-6 ${channel.length>0?"block":"hidden"} `}>
+        <div
+          className={`space-y-6 ${channel.length > 0 ? "block" : "hidden"} `}
+        >
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition hover:border-blue-400">
             <div className="flex flex-col items-center justify-center space-y-3">
               <svg
@@ -257,15 +319,18 @@ const UploadAndSyncWithOrderId = () => {
 
                 {console.log(csvData)}
               </div>
-              
             </div>
-            
           )}
-            <div className={`${response?.all_orders[0].order_id?"block":"hidden"} h-55  overflow-auto`}>
-                <TagPDFGenerator csvData={csvData} order_id={response?.all_orders} />
-
-                
-              </div>
+          <div
+            className={`${
+              response?.all_orders[0].order_id ? "block" : "hidden"
+            } h-55  overflow-auto`}
+          >
+            <TagPDFGenerator
+              csvData={csvData}
+              order_id={response?.all_orders}
+            />
+          </div>
         </div>
       </div>
     </>
