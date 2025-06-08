@@ -73,7 +73,7 @@ const UploadAndSyncWithOrderId = () => {
             "";
           const mrp =
             row["MRP"] ||
-            product.find((p) => p.sku_code === Number(styleNumber))?.MRP ||
+            product.find((p) => p.style_code === Number(styleNumber))?.mrp ||
             "";
           const quantity = parseInt(row["Qty"] || row["Good"] || 1, 10);
 
